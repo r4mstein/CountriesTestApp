@@ -9,5 +9,6 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        ObjectGraph.getInstance(this) //initialize di
     }
 }

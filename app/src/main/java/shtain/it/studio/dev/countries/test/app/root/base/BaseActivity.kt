@@ -3,6 +3,7 @@ package shtain.it.studio.dev.countries.test.app.root.base
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import shtain.it.studio.dev.countries.test.app.root.ObjectGraph
 import javax.inject.Inject
 
 /**
@@ -14,6 +15,7 @@ abstract class BaseActivity<N : INavigator, V : IView, P : IPresenter<V>> : AppC
     protected var mNavigator: N? = null
     @Inject
     lateinit var mPresenter: P
+    protected var mObjectGraph: ObjectGraph? = null
 
     protected abstract fun setup()
 
@@ -23,6 +25,7 @@ abstract class BaseActivity<N : INavigator, V : IView, P : IPresenter<V>> : AppC
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mObjectGraph = ObjectGraph.getInstance(application)
         setup()
     }
 
