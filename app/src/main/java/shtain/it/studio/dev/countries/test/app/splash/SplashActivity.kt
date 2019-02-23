@@ -4,8 +4,8 @@ import android.animation.AnimatorSet
 import android.content.Intent
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_splash.*
-import shtain.it.studio.dev.countries.test.app.MainActivity
 import shtain.it.studio.dev.countries.test.app.R
+import shtain.it.studio.dev.countries.test.app.main.navigator.MainActivity
 import shtain.it.studio.dev.countries.test.app.root.base.BaseActivity
 
 /**

@@ -13,4 +13,8 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="ToolbarTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:fontFamily">@font/firasans_regular</item>
+    </style>
+
 </resources>
