@@ -7,6 +7,7 @@ import shtain.it.studio.dev.countries.test.app.main.countries_list.models.Adapte
 import shtain.it.studio.dev.countries.test.app.main.neighbors.models.NeighborsResponse
 import shtain.it.studio.dev.countries.test.app.root.base.BasePresenter
 import shtain.it.studio.dev.countries.test.app.root.disposable_manager.IDisposableManager
+import shtain.it.studio.dev.countries.test.app.root.network.INetworkManager
 import javax.inject.Inject
 
 /**
@@ -14,7 +15,8 @@ import javax.inject.Inject
  */
 class NeighborsPresenter @Inject constructor(
     private val mainService: IMainService,
-    private val disposableManager: IDisposableManager
+    private val disposableManager: IDisposableManager,
+    private val networkManager: INetworkManager
 ): BasePresenter<INeighborsContract.View>(), INeighborsContract.Presenter {
 
     override fun onStop() {
@@ -22,18 +24,22 @@ class NeighborsPresenter @Inject constructor(
     }
 
     override fun loadData(codes: String) {
-        disposableManager.add(mainService.getNeighbors(codes)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    mView?.dataLoaded(createAdapterData(it))
-                },
-                {
-                    mView?.loadDataFailed(it)
-                }
+        if (networkManager.isConnected()) {
+            disposableManager.add(mainService.getNeighbors(codes)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        mView?.dataLoaded(createAdapterData(it))
+                    },
+                    {
+                        mView?.loadDataFailed(it)
+                    }
+                )
             )
-        )
+        } else {
+            mView?.loadDataFailed(Throwable("No internet connection"))
+        }
     }
 
     private fun createAdapterData(data: List<NeighborsResponse>): ArrayList<AdapterData> {

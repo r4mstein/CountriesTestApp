@@ -29,4 +29,19 @@
             android:visibility="gone"
     />
 
+    <TextView
+            android:id="@+id/tvErrorPlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:padding="8dp"
+            android:gravity="center"
+            android:background="@color/colorAccent"
+            tools:text="No internet"
+            android:textSize="16sp"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/firasans_blackitalic"
+            android:visibility="gone"
+    />
+
 </RelativeLayout>

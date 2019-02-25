@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -50,15 +49,13 @@ class CountriesFragment : BaseFragment<IMainNavigator, ICountriesContract.View, 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupList()
+        srlCountries.setOnRefreshListener { loadData() }
     }
 
     override fun onStart() {
         super.onStart()
         mNavigator?.setToolbarTitle(resources.getString(R.string.toolbar_title_list))
-        if (mAdapter?.getDataSize() == 0) {
-            mNavigator?.showProgressBar()
-            mPresenter.loadData()
-        }
+        if (mAdapter?.getDataSize() == 0) loadData()
         subscribeForSearchObservable()
     }
 
@@ -66,6 +63,14 @@ class CountriesFragment : BaseFragment<IMainNavigator, ICountriesContract.View, 
         super.onStop()
         if (!mSearchDisposable.isDisposed) mSearchDisposable.dispose()
         mNavigator?.hideProgressBar()
+        hideSwipeLoader()
+    }
+
+    private fun loadData() {
+        mNavigator?.hideErrorPlaceholder()
+        hideSwipeLoader()
+        mNavigator?.showProgressBar()
+        mPresenter.loadData()
     }
 
     @SuppressLint("CheckResult")
@@ -125,10 +130,16 @@ class CountriesFragment : BaseFragment<IMainNavigator, ICountriesContract.View, 
     override fun dataLoaded(data: ArrayList<AdapterData>) {
         mAdapter?.addData(data)
         mNavigator?.hideProgressBar()
+        hideSwipeLoader()
     }
 
     override fun loadDataFailed(throwable: Throwable) {
         mNavigator?.hideProgressBar()
-        Log.e("CountriesFragment", "loadDataFailed ${throwable.message}")
+        mNavigator?.showErrorPlaceholder(throwable.message ?: "")
+        hideSwipeLoader()
+    }
+
+    private fun hideSwipeLoader() {
+        if (srlCountries.isRefreshing) srlCountries.isRefreshing = false
     }
 }

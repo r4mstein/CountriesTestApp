@@ -11,6 +11,7 @@ import shtain.it.studio.dev.countries.test.app.main.navigator.MainPresenter
 import shtain.it.studio.dev.countries.test.app.main.neighbors.INeighborsContract
 import shtain.it.studio.dev.countries.test.app.main.neighbors.NeighborsPresenter
 import shtain.it.studio.dev.countries.test.app.root.disposable_manager.IDisposableManager
+import shtain.it.studio.dev.countries.test.app.root.network.INetworkManager
 import shtain.it.studio.dev.countries.test.app.root.network.retrofit.RetrofitHelper
 
 /**
@@ -28,15 +29,18 @@ class DiMainModule {
     @Provides
     @MainScope
     fun provideCountriesPresenter(mainService: IMainService,
-                                  disposableManager: IDisposableManager): ICountriesContract.Presenter {
-        return CountriesPresenter(mainService, disposableManager)
+                                  disposableManager: IDisposableManager,
+                                  networkManager: INetworkManager
+    ): ICountriesContract.Presenter {
+        return CountriesPresenter(mainService, disposableManager, networkManager)
     }
 
     @Provides
     @MainScope
     fun provideNeighborsPresenter(mainService: IMainService,
-                                  disposableManager: IDisposableManager): INeighborsContract.Presenter {
-        return NeighborsPresenter(mainService, disposableManager)
+                                  disposableManager: IDisposableManager,
+                                  networkManager: INetworkManager): INeighborsContract.Presenter {
+        return NeighborsPresenter(mainService, disposableManager, networkManager)
     }
 
     @Provides

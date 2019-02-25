@@ -2,7 +2,6 @@ package shtain.it.studio.dev.countries.test.app.main.neighbors
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
@@ -44,6 +43,7 @@ class NeighborsFragment : BaseFragment<IMainNavigator, INeighborsContract.View, 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupList()
+        srlNeighbors.setOnRefreshListener { loadData() }
     }
 
     override fun onStart() {
@@ -52,7 +52,15 @@ class NeighborsFragment : BaseFragment<IMainNavigator, INeighborsContract.View, 
         loadData()
     }
 
+    override fun onStop() {
+        super.onStop()
+        mNavigator?.hideProgressBar()
+        hideSwipeLoader()
+    }
+
     private fun loadData() {
+        mNavigator?.hideErrorPlaceholder()
+        hideSwipeLoader()
         if (mMainCountry.borders.isEmpty()) tvPlaceholder.visibility = VISIBLE
         else {
             mNavigator?.showProgressBar()
@@ -71,10 +79,16 @@ class NeighborsFragment : BaseFragment<IMainNavigator, INeighborsContract.View, 
     override fun dataLoaded(data: ArrayList<AdapterData>) {
         mAdapter.addData(data)
         mNavigator?.hideProgressBar()
+        hideSwipeLoader()
     }
 
     override fun loadDataFailed(throwable: Throwable) {
         mNavigator?.hideProgressBar()
-        Log.e("NeighborsFragment", "loadDataFailed ${throwable.message}")
+        hideSwipeLoader()
+        mNavigator?.showErrorPlaceholder(throwable.message ?: "")
+    }
+
+    private fun hideSwipeLoader() {
+        if (srlNeighbors.isRefreshing) srlNeighbors.isRefreshing = false
     }
 }

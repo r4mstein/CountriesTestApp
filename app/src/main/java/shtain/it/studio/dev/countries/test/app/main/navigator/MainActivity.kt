@@ -57,4 +57,13 @@ class MainActivity : BaseActivity<IMainNavigator, IContract.View, IContract.Pres
     override fun hideProgressBar() {
         if (pbLoader.visibility == View.VISIBLE) pbLoader.visibility = View.GONE
     }
+
+    override fun showErrorPlaceholder(message: String) {
+        tvErrorPlaceholder.text = message
+        if (tvErrorPlaceholder.visibility == View.GONE) tvErrorPlaceholder.visibility = View.VISIBLE
+    }
+
+    override fun hideErrorPlaceholder() {
+        if (tvErrorPlaceholder.visibility == View.VISIBLE) tvErrorPlaceholder.visibility = View.GONE
+    }
 }

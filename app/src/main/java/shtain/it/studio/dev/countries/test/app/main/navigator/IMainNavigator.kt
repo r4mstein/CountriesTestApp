@@ -14,4 +14,7 @@ interface IMainNavigator : INavigator {
 
     fun showProgressBar()
     fun hideProgressBar()
+
+    fun showErrorPlaceholder(message: String)
+    fun hideErrorPlaceholder()
 }

@@ -8,6 +8,7 @@ import shtain.it.studio.dev.countries.test.app.main.countries_list.models.Adapte
 import shtain.it.studio.dev.countries.test.app.main.countries_list.models.AllCountriesResponse
 import shtain.it.studio.dev.countries.test.app.root.base.BasePresenter
 import shtain.it.studio.dev.countries.test.app.root.disposable_manager.IDisposableManager
+import shtain.it.studio.dev.countries.test.app.root.network.INetworkManager
 import javax.inject.Inject
 
 /**
@@ -15,7 +16,8 @@ import javax.inject.Inject
  */
 class CountriesPresenter @Inject constructor(
     private val mainService: IMainService,
-    private val disposableManager: IDisposableManager
+    private val disposableManager: IDisposableManager,
+    private val networkManager: INetworkManager
 ) : BasePresenter<ICountriesContract.View>(), ICountriesContract.Presenter {
 
     override fun onStop() {
@@ -24,17 +26,21 @@ class CountriesPresenter @Inject constructor(
 
     @SuppressLint("CheckResult")
     override fun loadData() {
-        disposableManager.add(mainService.getAllCountries()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { response ->
-                    mView?.dataLoaded(createAdapterData(response))
-                },
-                { throwable ->
-                    mView?.loadDataFailed(throwable)
-                }
-            ))
+        if (networkManager.isConnected()) {
+            disposableManager.add(mainService.getAllCountries()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { response ->
+                        mView?.dataLoaded(createAdapterData(response))
+                    },
+                    { throwable ->
+                        mView?.loadDataFailed(throwable)
+                    }
+                ))
+        } else {
+            mView?.loadDataFailed(Throwable("No internet connection"))
+        }
     }
 
     private fun createAdapterData(data: List<AllCountriesResponse>): ArrayList<AdapterData> {

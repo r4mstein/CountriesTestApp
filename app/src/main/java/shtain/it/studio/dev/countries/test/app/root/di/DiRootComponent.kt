@@ -6,6 +6,7 @@ import shtain.it.studio.dev.countries.test.app.root.anim_manager.IAnimManager
 import shtain.it.studio.dev.countries.test.app.root.anim_manager.di.DiAnimManagerModule
 import shtain.it.studio.dev.countries.test.app.root.disposable_manager.IDisposableManager
 import shtain.it.studio.dev.countries.test.app.root.disposable_manager.di.DiDisposableManagerModule
+import shtain.it.studio.dev.countries.test.app.root.network.INetworkManager
 import shtain.it.studio.dev.countries.test.app.root.network.di.DiNetworkModule
 import shtain.it.studio.dev.countries.test.app.root.network.retrofit.RetrofitHelper
 import javax.inject.Singleton
@@ -27,4 +28,5 @@ interface DiRootComponent {
     fun getAnimManager(): IAnimManager
     fun getDisposableManager(): IDisposableManager
     fun getRetrofitHelper(): RetrofitHelper
+    fun getNetworkManager(): INetworkManager
 }

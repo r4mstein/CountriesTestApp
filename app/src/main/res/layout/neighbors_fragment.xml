@@ -1,30 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/srlNeighbors"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvNeighborsList"
+    <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="22dp"
-            android:clipToPadding="false"
-    />
+            android:layout_height="match_parent">
 
-    <TextView
-            android:id="@+id/tvPlaceholder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/neighbors_placeholder"
-            android:textSize="22sp"
-            android:textColor="@android:color/black"
-            android:fontFamily="@font/firasans_black"
-            android:gravity="center"
-            android:layout_marginStart="22dp"
-            android:layout_marginEnd="22dp"
-            android:visibility="gone"
-    />
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvNeighborsList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="22dp"
+                android:clipToPadding="false"
+        />
 
-</RelativeLayout>
+        <TextView
+                android:id="@+id/tvPlaceholder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/neighbors_placeholder"
+                android:textSize="22sp"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/firasans_black"
+                android:gravity="center"
+                android:layout_marginStart="22dp"
+                android:layout_marginEnd="22dp"
+                android:visibility="gone"
+        />
+
+    </RelativeLayout>
+
+</android.support.v4.widget.SwipeRefreshLayout>
