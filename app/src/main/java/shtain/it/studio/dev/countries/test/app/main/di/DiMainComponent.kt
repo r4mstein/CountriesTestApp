@@ -1,6 +1,7 @@
 package shtain.it.studio.dev.countries.test.app.main.di
 
 import dagger.Component
+import shtain.it.studio.dev.countries.test.app.main.countries_list.CountriesFragment
 import shtain.it.studio.dev.countries.test.app.main.navigator.MainActivity
 import shtain.it.studio.dev.countries.test.app.root.di.DiRootComponent
 
@@ -14,4 +15,5 @@ import shtain.it.studio.dev.countries.test.app.root.di.DiRootComponent
 )
 interface DiMainComponent {
     fun inject(activity: MainActivity)
+    fun inject(fragment: CountriesFragment)
 }

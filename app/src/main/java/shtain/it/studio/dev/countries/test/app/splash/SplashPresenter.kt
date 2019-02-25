@@ -27,11 +27,12 @@ class SplashPresenter @Inject constructor(
 
     @SuppressLint("CheckResult")
     override fun startTimer() {
-        Observable.timer(DELAY_TIME, TimeUnit.MILLISECONDS)
+        disposableManager.add(Observable.timer(DELAY_TIME, TimeUnit.MILLISECONDS)
             .doOnSubscribe { mView?.startAnimation() }
             .subscribe {
+                disposableManager.isNeedDispose(false)
                 mView?.openMainScreen()
-            }
+            })
     }
 
     override fun createLogoAnim(view: View): AnimatorSet {

@@ -10,4 +10,5 @@ interface IDisposableManager {
     fun dispose()
     fun clear()
     fun isDisposed(): Boolean
+    fun isNeedDispose(isNeed: Boolean)
 }

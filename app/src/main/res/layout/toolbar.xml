@@ -9,6 +9,7 @@
         android:minHeight="?attr/actionBarSize"
         app:titleTextAppearance="@style/ToolbarTextAppearance"
         app:titleTextColor="@android:color/white"
+        android:theme="@style/ToolbarTheme"
 >
 
 </android.support.v7.widget.Toolbar>

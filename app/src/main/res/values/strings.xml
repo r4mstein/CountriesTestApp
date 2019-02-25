@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Countries</string>
 
+    <string name="toolbar_title_list">List of Countries</string>
+
+    <string name="search">Search</string>
+
     <string name="content_description_logo">Logo</string>
+    <string name="content_description_flag">Flag</string>
 </resources>

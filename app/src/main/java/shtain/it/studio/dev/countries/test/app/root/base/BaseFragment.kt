@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.annotation.CallSuper
 import android.support.v4.app.Fragment
 import android.view.View
+import shtain.it.studio.dev.countries.test.app.root.ObjectGraph
 import javax.inject.Inject
 
 /**
@@ -15,6 +16,7 @@ abstract class BaseFragment<N : INavigator, V : IView, P : IPresenter<V>> : Frag
     protected var mNavigator: N? = null
     @Inject
     lateinit var mPresenter: P
+    protected var mObjectGraph: ObjectGraph? = null
 
     protected abstract fun setup()
 
@@ -23,6 +25,7 @@ abstract class BaseFragment<N : INavigator, V : IView, P : IPresenter<V>> : Frag
         super.onAttach(context)
         @Suppress("UNCHECKED_CAST")
         mNavigator = (activity as INavigatorProvider<N>).getNavigator()
+        mObjectGraph = ObjectGraph.getInstance(this.activity!!.application)
         setup()
     }
 

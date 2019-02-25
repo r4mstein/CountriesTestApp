@@ -9,21 +9,28 @@ import io.reactivex.disposables.Disposable
 class DisposableManagerImpl : IDisposableManager {
 
     private var mCompositeDisposable: CompositeDisposable? = null
+    var isNeedDispose: Boolean = true
 
     override fun add(_disposable: Disposable) {
         getCompositeDisposable().add(_disposable)
     }
 
     override fun dispose() {
-        mCompositeDisposable?.let { if (!it.isDisposed) it.dispose() }
+        if (isNeedDispose) mCompositeDisposable?.let { if (!it.isDisposed) it.dispose() }
+        else isNeedDispose = true
     }
 
     override fun clear() {
-        mCompositeDisposable?.let { if (!it.isDisposed) it.clear() }
+        if (isNeedDispose) mCompositeDisposable?.let { if (!it.isDisposed) it.clear() }
+        else isNeedDispose = true
     }
 
     override fun isDisposed(): Boolean {
         return mCompositeDisposable == null || mCompositeDisposable?.isDisposed ?: true
+    }
+
+    override fun isNeedDispose(isNeed: Boolean) {
+        isNeedDispose = isNeed
     }
 
     private fun getCompositeDisposable(): CompositeDisposable {

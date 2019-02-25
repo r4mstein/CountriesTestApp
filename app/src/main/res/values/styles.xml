@@ -17,4 +17,9 @@
         <item name="android:fontFamily">@font/firasans_regular</item>
     </style>
 
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorControlNormal">@android:color/white</item>
+        <item name="android:colorControlActivated">@android:color/white</item>
+    </style>
+
 </resources>
