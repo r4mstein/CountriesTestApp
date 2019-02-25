@@ -1,6 +1,5 @@
 package shtain.it.studio.dev.countries.test.app.main.countries_list.adapter
 
-import android.content.Context
 import android.graphics.drawable.PictureDrawable
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
@@ -20,12 +19,12 @@ import shtain.it.studio.dev.countries.test.app.root.SvgSoftwareLayerSetter
 /**
  * Created by Alex Shtain on 23.02.2019.
  */
-class Adapter(private val context: Context) : RecyclerView.Adapter<Adapter.ViewHolder>() {
+class Adapter : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
     private val mData = ArrayList<AdapterData>()
     private val mAllDataForFilter = ArrayList<AdapterData>()
     private var mRequestBuilder: RequestBuilder<PictureDrawable>? = null
-    private lateinit var mClickListener: ClickListener
+    private var mClickListener: ClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.countries_item, parent, false))
@@ -35,7 +34,7 @@ class Adapter(private val context: Context) : RecyclerView.Adapter<Adapter.ViewH
         val data = mData[position]
         holder.name.text = data.name
         loadFlag(data, holder)
-        holder.itemView.setOnClickListener { mClickListener.itemClicked(data) }
+        holder.itemView.setOnClickListener { mClickListener?.itemClicked(data) }
     }
 
     override fun getItemCount(): Int {
@@ -44,7 +43,7 @@ class Adapter(private val context: Context) : RecyclerView.Adapter<Adapter.ViewH
 
     private fun loadFlag(data: AdapterData, holder: ViewHolder) {
         if (mRequestBuilder == null) {
-            mRequestBuilder = GlideApp.with(context)
+            mRequestBuilder = GlideApp.with(holder.itemView.context)
                 .`as`(PictureDrawable::class.java)
                 .placeholder(R.drawable.ic_launcher_background)
                 .transition(withCrossFade())

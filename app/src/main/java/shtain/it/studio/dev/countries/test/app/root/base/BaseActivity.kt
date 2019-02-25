@@ -3,6 +3,7 @@ package shtain.it.studio.dev.countries.test.app.root.base
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import shtain.it.studio.dev.countries.test.app.R
 import shtain.it.studio.dev.countries.test.app.root.ObjectGraph
 import javax.inject.Inject
 
@@ -58,6 +59,7 @@ abstract class BaseActivity<N : INavigator, V : IView, P : IPresenter<V>> : AppC
     protected fun replaceFragmentAndAddToBackStack(_containerId: Int, _fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
+            .setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left)
             .replace(_containerId, _fragment)
             .addToBackStack(null)
             .commit()

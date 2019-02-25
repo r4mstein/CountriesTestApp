@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -27,9 +26,10 @@ import java.util.concurrent.TimeUnit
 class CountriesFragment : BaseFragment<IMainNavigator, ICountriesContract.View, ICountriesContract.Presenter>(),
     ICountriesContract.View {
 
-    private lateinit var mAdapter: Adapter
+    private var mAdapter: Adapter? = null
     val subject = PublishSubject.create<String>()
     private lateinit var mSearchDisposable: Disposable
+    private var mSearchedText = ""
 
     companion object {
         fun newInstance(): CountriesFragment {
@@ -55,7 +55,7 @@ class CountriesFragment : BaseFragment<IMainNavigator, ICountriesContract.View, 
     override fun onStart() {
         super.onStart()
         mNavigator?.setToolbarTitle(resources.getString(R.string.toolbar_title_list))
-        if (mAdapter.getDataSize() == 0) {
+        if (mAdapter?.getDataSize() == 0) {
             mNavigator?.showProgressBar()
             mPresenter.loadData()
         }
@@ -77,7 +77,12 @@ class CountriesFragment : BaseFragment<IMainNavigator, ICountriesContract.View, 
     private fun setupSearchView(menu: MenuItem?) {
         val mSearchView = menu?.actionView as SearchView
         mSearchView.apply {
-            queryHint = resources.getString(R.string.search)
+            if (!mSearchedText.isEmpty()) {
+                menu.expandActionView()
+                mSearchView.setQuery(mSearchedText, true)
+                mSearchView.clearFocus()
+            }
+            else queryHint = resources.getString(R.string.search)
 
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean {
@@ -98,12 +103,13 @@ class CountriesFragment : BaseFragment<IMainNavigator, ICountriesContract.View, 
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                mAdapter.filterData(it)
+                mAdapter?.filterData(it)
+                mSearchedText = it
             }
     }
 
     private fun setupList() {
-        mAdapter = Adapter(context!!).apply { setClickListener(mClickListener) }
+        if (mAdapter == null) mAdapter = Adapter().apply { setClickListener(mClickListener) }
         rvList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = mAdapter
@@ -112,12 +118,12 @@ class CountriesFragment : BaseFragment<IMainNavigator, ICountriesContract.View, 
 
     private val mClickListener = object : ClickListener {
         override fun itemClicked(data: AdapterData) {
-            Toast.makeText(context, data.name, Toast.LENGTH_SHORT).show()
+            mNavigator?.showNeighborsFragment(data)
         }
     }
 
     override fun dataLoaded(data: ArrayList<AdapterData>) {
-        mAdapter.addData(data)
+        mAdapter?.addData(data)
         mNavigator?.hideProgressBar()
     }
 
